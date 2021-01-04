@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}New Post{% endblock %}
+
+{% block content_wrap %}
+<div class="create">
+
+{% block header %}
+  <h2>
+  </h2>
+{% endblock %}
+
+{% block content %}
+  
+    <div class="select_type_create">
+        <a class="d-flex" href="{{ url_for('blog.create_type_text') }}">
+            <img src="{{ url_for('static', filename='img/font.svg') }}" alt="type_text">
+        </a>
+        <a class="d-flex" href="{{ url_for('blog.create_type_quote') }}">
+            <img src="{{ url_for('static', filename='img/quote.svg') }}" alt="type_quote">
+        </a>
+        <a class="d-flex" href="{{ url_for('blog.create_type_image') }}">
+            <img src="{{ url_for('static', filename='img/pictures.svg') }}" alt="type_image">
+        </a>
+        <a class="d-flex" href="{{ url_for('blog.create_type_complex') }}">
+            <img src="{{ url_for('static', filename='img/grid.svg') }}" alt="type_complex">
+        </a>
+    </div>
+     
+{% endblock %}
+
+</div>
+{% endblock %}

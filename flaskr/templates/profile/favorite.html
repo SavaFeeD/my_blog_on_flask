@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content_wrap %}
+<div class="container favorite">
+
+{% block header %}
+    <h1>Favorites</h1>
+{% endblock %}
+
+{% block content %}
+
+    <div class="wrap_favorite_card">
+        {% for fav in favorite_list %}
+            <div class="favorite_card">
+                <a data-page="no_style" href="{{ url_for('profile.people', profile_id=fav['id']) }}" class="d-flex">
+                    <div class="user_img_wrap">
+                        {% if fav['img'] == None %}
+                            <img src="{{ url_for('static', filename='img/none_img_profile.svg') }}" class="user_img" alt="user">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='uploads/' + fav['img']) }}" class="user_img" alt="user">
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h3>{{ fav['username'] }}</h3>
+                    </div>
+                </a>
+                <div class="wrap_add_favorite">
+                    <a href="{{ url_for('profile.delete_favorite', profile_id=fav['id'], to_page=1) }}" class="btn btn-outline-primary">X</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+</div>
+{% endblock %}

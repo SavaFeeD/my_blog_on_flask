@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content_wrap %}
+<div class="content-wrap content-wrap_AllCenter">
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    <div class="btn-wrap">
+        <button type="submit" class="btn btn-primary pos-r">Register<img src="{{ url_for('static', filename='img/reg.svg') }}" class="right" /></button>
+    </div>
+  </form>
+{% endblock %}
+
+</div>
+{% endblock %}

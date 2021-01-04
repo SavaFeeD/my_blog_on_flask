@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content_wrap %}
+<div class="container page_posts search">
+
+{% block header %}
+    <h1>{% block title %}Search Result{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="search_wrap">
+        <form method="post" class="search___" action="{{ url_for('search.search') }}">
+            <select name="_type" value="{{ request.form['_type'] }}">
+                <option value="post">post</option>
+                <option value="people">people</option>
+            </select>
+            <input name="search" type="text" id="search_in" placeholder="Search posts.." value="{{ request.form['search'] }}" />
+            <button type="submit">
+                <img src="{{ url_for('static', filename='img/search.svg') }}" alt="search">
+            </button>
+        </form>
+    </div>
+
+    {% if not posts %}
+        <h4>not found</h4>
+    {% else %}
+        <section class="wrap-posts">
+          {% for post in posts %}
+              <article class="post">
+                <div class="img_creator_post">
+                  <a href="{{ url_for('profile.people', profile_id=post['user_id']) }}" >
+                    {% if post['user_img'] == None %}
+                        <img src="{{ url_for('static', filename='img/none_img_profile.svg') }}" alt="user">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='uploads/' + post['user_img']) }}" alt="user">
+                    {% endif %}
+                  </a>
+                </div>
+
+                <header>
+                    <h1>
+                        <a data-page='no_style' href="{{ url_for('profile.people', profile_id=post['user_id']) }}">{{ post['username'] }}</a>
+                    </h1>
+
+                    <div class="post-action">
+
+                    {% if g.user['id'] == post['author_id'] %}
+                    <a href="{{ url_for('blog.update', id=post['id']) }}">
+                        <img src="{{ url_for('static', filename='img/edit.svg') }}" alt="edit.svg">
+                    </a>
+                    {% endif %}
+
+                    <a class="tooltip_obj" data-tooltip="{{ post['created'].strftime('%Y-%m-%d %H:%M') }}">
+                        <img src="{{ url_for('static', filename='img/coffee.svg') }}" alt="time.svg">
+                    </a>
+
+                    </div>
+                </header>
+
+                {% if post['post_img'] != None %}
+                <div class="post-image">
+                    <img src="{{ url_for('static', filename='uploads/' + post['post_img']) }}" alt="post-image">
+                </div>
+                {% endif %}
+
+                <div class="post-body">
+
+                    {% if post['title'] != None %}
+                        <p class="title_post">{{ post['title'] }}</p>
+                    {% endif %}
+
+                    {% if post['body'] != None %}
+                        <p class="body_post">{{ post['body'] }}</p>
+                    {% endif %}
+
+                </div>
+
+                {% if post['quote_body'] != None and post['quote_footer'] != None %}
+                    <blockquote class="blockquote">
+                      <p>{{ post['quote_body'] }}</p>
+                      <footer class="blockquote-footer">{{ post['quote_footer'] }}</footer>
+                    </blockquote>
+                {% endif %}
+              </article>
+            {% if not loop.last %}
+              <br/>
+            {% endif %}
+        {% endfor %}
+        </section>
+        {% endif %}
+{% endblock %}
+
+</div>
+{% endblock %}

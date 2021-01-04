@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content_wrap %}
+<div class="content-wrap content-wrap_AllCenter">
+
+{% block header %}
+  <h1>{% block title %}Edit "{{ post['title'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+    <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+        <input class="btn btn-primary" type="submit" value="Delete Post" onclick="return confirm('Are you sure?');">
+    </form>
+
+{% endblock %}
+
+</div>
+{% endblock %}

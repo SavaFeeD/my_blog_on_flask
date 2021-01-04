@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content_wrap %}
+<div class="content-wrap content-wrap_AllCenter">
+
+{% block header %}
+      <h1>{% block title %}Settings Profile{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+    <div class="replace_profile">
+
+        <form action="{{ url_for('upload.new_ava') }}" method="post" enctype="multipart/form-data">
+            <label>Change avatar:</label>
+            <div class="d-flex">
+                <input type="file" name="file" />
+                <input type="submit" class="btn btn-primary" value="Change"/>
+            </div>
+        </form>
+        <form action="{{ url_for('upload.new_username') }}" method="post">
+            <label>Change username:</label>
+            <div class="d-flex">
+                <input type="text" name="username" />
+                <input type="submit" class="btn btn-primary" value="Change"/>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+</div>
+{% endblock %}

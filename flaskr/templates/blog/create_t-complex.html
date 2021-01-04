@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}New Post{% endblock %}
+
+{% block content_wrap %}
+<div class="create">
+
+{% block header %}
+  <h2>
+  </h2>
+{% endblock %}
+
+{% block content %}
+  <form method="post" action="{{ url_for('blog.create_type_complex') }}" enctype="multipart/form-data">
+
+    <div class="create_input_title no_border">
+        <label>Image</label>
+        <input class="create_input" name="image" type="file" accept="image/*" value="{{ request.form['img'] }}">
+    </div>
+
+    <div class="create_input_title no_border">
+        <label>Title</label>
+        <input class="create_input" name="title" value="{{ request.form['title'] }}">
+    </div>
+
+    <div class="create_input_title no_border">
+        <label>Text</label>
+        <textarea class="create_input" name="body">{{ request.form['body'] }}</textarea>
+    </div>
+
+    <div class="create_input_title no_border">
+        <label>Text quote</label>
+        <textarea class="create_input" name="quote-body">{{ request.form['quote-body'] }}</textarea>
+    </div>
+
+    <div class="create_input_title no_border">
+        <label>Quote</label>
+        <input class="create_input" name="quote-footer" value="{{ request.form['quote-footer'] }}">
+    </div>
+
+    <div class="wrap_input_add">
+        <input class="create_input create_input_add"  type="submit" value="Create">
+    </div>
+
+  </form>
+{% endblock %}
+
+</div>
+{% endblock %}

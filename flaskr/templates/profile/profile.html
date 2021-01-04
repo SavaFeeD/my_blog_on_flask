@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content_wrap %}
+<div class="container profile">
+
+{% block header %}
+    <h1>
+        <div class="user_img_wrap">
+            {% if profile_info[0]['img'] == None %}
+                <img src="{{ url_for('static', filename='img/none_img_profile.svg') }}" class="user_img" alt="user"
+                    data-image_open="{{ url_for('static', filename='img/none_img_profile.svg') }}">
+            {% else %}
+                <img src="{{ url_for('static', filename='uploads/' + profile_info[0]['img']) }}" class="user_img" alt="user"
+                    data-image_open="{{ url_for('static', filename='uploads/' + profile_info[0]['img']) }}">
+            {% endif %}
+        </div>
+
+        <ul>
+            <li><div>Name:</div><span>{{ profile_info[0]['username'] }}</span></li>
+            <li><div>Posts:</div><span>{{ profile_count_posts[0] }}</span></li>
+        </ul>
+        <ul>
+            <li><div>Favorites:</div><span>{{ favorite_count }}</span></li>
+            <li><div>Followers:</div><span>{{ follower_count }}</span></li>
+        </ul>
+        {% if g.user['id'] != 1 %}
+        <ul class="wrap_add_favorite">
+            {% if profile_info[0]['id'] != g.user['id'] %}
+                {% if is_favorite != 'delete' %}
+                    <a href="{{ url_for('profile.add_favorite', profile_id=profile_info[0]['id']) }}" data-tooltip="Add to favorites" class="btn btn-outline-primary">+</a>
+                {% else %}
+                    <a href="{{ url_for('profile.delete_favorite', profile_id=profile_info[0]['id'], to_page=0) }}" data-tooltip="Remove favorites" class="btn btn-outline-primary">X</a>
+                {% endif %}
+            {% else %}
+                <a class="btn" data-tooltip="Add images">
+                    <img src="{{ url_for('static', filename='img/photo white.svg') }}" alt="add_img" data-modal="upload_img_profile">
+                </a>
+            {% endif %}
+        </ul>
+        {% endif %}
+    </h1>
+{% endblock %}
+
+{% block content %}
+    {% if user_imgs[0] %}
+    <div class="wrap_images">
+        {% if user_imgs[0]['count_img'] > 5 %}
+        <button class="btn_left"> < </button>
+        <button class="btn_right"> > </button>
+        {% endif %}
+        <h5>~# <span>{{ user_imgs[0]['count_img'] }} images</span> #~</h5>
+        <ol>
+            {% for path in user_imgs %}
+                <img src="{{ url_for('static', filename='uploads/'+path['img']) }}" alt="{{ path['img'] }}"
+                     data-image_open="{{ url_for('static', filename='uploads/'+path['img']) }}">
+            {% endfor %}
+        </ol>
+    </div>
+    {% endif %}
+
+
+    <section class="wrap-posts">
+       {% for post in posts %}
+          <article class="post">
+            <div class="img_creator_post">
+              <a href="{{ url_for('profile.people', profile_id=post['user_id']) }}" >
+                {% if post['user_img'] == None %}
+                    <img src="{{ url_for('static', filename='img/none_img_profile.svg') }}" alt="user">
+                {% else %}
+                    <img src="{{ url_for('static', filename='uploads/' + post['user_img']) }}" alt="user">
+                {% endif %}
+              </a>
+            </div>
+
+            <header>
+                <h1 class="none">
+                    <a data-page='no_style' href="{{ url_for('profile.people', profile_id=post['user_id']) }}">{{ post['username'] }}</a>
+                </h1>
+
+                <div class="post-action">
+
+                {% if g.user['id'] == post['author_id'] %}
+                <a href="{{ url_for('blog.update', id=post['id']) }}">
+                    <img src="{{ url_for('static', filename='img/edit.svg') }}" alt="edit.svg">
+                </a>
+                {% endif %}
+
+                <a class="tooltip_obj" data-tooltip="{{ post['created'].strftime('%Y-%m-%d %H:%M') }}">
+                    <img src="{{ url_for('static', filename='img/coffee.svg') }}" alt="time.svg">
+                </a>
+
+                </div>
+            </header>
+
+            {% if post['post_img'] != None %}
+            <div class="post-image">
+                <img src="{{ url_for('static', filename='uploads/' + post['post_img']) }}" alt="post-image">
+            </div>
+            {% endif %}
+
+            <div class="post-body">
+
+                {% if post['title'] != None %}
+                    <p class="title_post">{{ post['title'] }}</p>
+                {% endif %}
+
+                {% if post['body'] != None %}
+                    <p class="body_post">{{ post['body'] }}</p>
+                {% endif %}
+
+            </div>
+
+            {% if post['quote_body'] != None and post['quote_footer'] != None %}
+                <blockquote class="blockquote">
+                  <p>{{ post['quote_body'] }}</p>
+                  <footer class="blockquote-footer">{{ post['quote_footer'] }}</footer>
+                </blockquote>
+            {% endif %}
+          </article>
+        {% if not loop.last %}
+          <br/>
+        {% endif %}
+    {% endfor %}
+    </section>
+
+{% endblock %}
+
+</div>
+{% endblock %}

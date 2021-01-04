@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}New Post{% endblock %}
+
+{% block content_wrap %}
+<div class="create">
+
+{% block header %}
+  <h2>
+  </h2>
+{% endblock %}
+
+{% block content %}
+  <form method="post" action="{{ url_for('blog.create_type_image') }}" enctype="multipart/form-data">
+
+    <div class="create_input_title no_border">
+        <label>Image</label>
+        <input class="create_input" name="image" type="file" accept="image/*" required>
+    </div>
+
+    <div class="create_input_title no_border">
+        <label>Title</label>
+        <input class="create_input" name="title" value="{{ request.form['title'] }}" required>
+    </div>
+
+    <div class="wrap_input_add">
+        <input class="create_input create_input_add"  type="submit" value="Create">
+    </div>
+
+  </form>
+{% endblock %}
+
+</div>
+{% endblock %}
